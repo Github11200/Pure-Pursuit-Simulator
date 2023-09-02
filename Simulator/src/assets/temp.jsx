@@ -1,8 +1,7 @@
 import { lookAheadDistance } from "../App";
 import { x as currentX } from "../App";
 import { y as currentY } from "../App";
-
-export let theWayPointBeingFollowed = null;
+import { P5 as p5 } from "../App";
 
 class FindGoalPoint {
     // This function just returns either 1 or -1 based on whether or not the number is positive or negative
@@ -11,20 +10,21 @@ class FindGoalPoint {
         else return -1;
     }
 
+    lastFoundIndex = 0;
+
     // This function just finds all the of the points on the path that the robot is intersecting with
     findIntersectionPoints(pointsHandler) {
-        console.log(pointsHandler);
         let goalPt = null;
         let sol1 = goalPt;
         let sol2 = goalPt;
+
+        let colors = ["purple", "blue", "yellow", "white", "green"];
 
         for (let i = 0; i < pointsHandler.Points.length - 1; ++i) {
             let pointOne = pointsHandler.Points[i];
             let pointTwo = pointsHandler.Points[i + 1];
 
-            theWayPointBeingFollowed = pointTwo;
-
-            // This variables store the x and y values for both points (we are storing them in these variables to improve the readability of the code)
+            // This variables store the x and y values for both points (we are storing them in these variables to improve the readability of hte code)
             let x1 = pointOne.x - currentX;
             let y1 = pointOne.y - currentY;
             let x2 = pointTwo.x - currentX;
@@ -40,6 +40,8 @@ class FindGoalPoint {
             let discriminant =
                 Math.pow(lookAheadDistance, 2) * Math.pow(dr, 2) -
                 Math.pow(D, 2);
+
+            console.log(`Discriminant: ${discriminant}`);
 
             // If the discriminant is less than 0, which means there are no solutions, then just continue in the loop
             if (discriminant < 0 || pointOne == pointTwo) continue;
@@ -81,6 +83,28 @@ class FindGoalPoint {
                 minY <= sol2.y &&
                 sol2.y <= maxY;
 
+            // Draw out the rectangles
+            p5.fill(colors[i]);
+            p5.rect(minX, minY, maxX, maxY);
+
+            // Draw out the circles where the solutions are
+            p5.fill(colors[i]);
+            p5.ellipse(sol1.x, sol1.y, 15, 15);
+            p5.ellipse(sol2.x, sol2.y, 15, 15);
+
+            console.log(`i is: ${i}`);
+            console.log(
+                `Point one x: ${pointOne.x}, Point one y: ${pointOne.y}`
+            );
+            console.log(
+                `Point two x: ${pointTwo.x}, Point two y: ${pointTwo.y}`
+            );
+
+            console.log(`Min x: ${minX}, Max x: ${maxX}`);
+            console.log(`Min y: ${minY}, Max y: ${maxY}`);
+            console.log(`Solution 1 x: ${sol1.x}, Solution 1 y: ${sol1.y}`);
+            console.log(`Solution 2 x: ${sol2.x}, Solution 2 y: ${sol2.y}`);
+
             // Check if either of the intersection points are valid
             if (validPointOne || validPointTwo) {
                 // Check if the first intersection point is valid, if it is then set goal point to the first solution
@@ -99,35 +123,14 @@ class FindGoalPoint {
                 }
             }
 
-            // This checks if the number of points is greater than 0 which means there is an end point
-            if (pointsHandler.Points.length > 0) {
-                // Since there is an end point get the coordinates of the last point in the array
-                let endX =
-                    pointsHandler.Points[pointsHandler.Points.length - 1].x;
-                let endY =
-                    pointsHandler.Points[pointsHandler.Points.length - 1].y;
-
-                if (currentX === endX && currentY === endY) return false;
-
-                if (
-                    Math.sqrt(
-                        (endX - currentX) * (endX - currentX) +
-                            (endY - currentY) * (endY - currentY)
-                    ) <=
-                    lookAheadDistance - (lookAheadDistance - 1)
-                )
-                    return false;
-
-                // Check if the distance to the end point is less than or equal to the look ahead distance
-                if (
-                    Math.sqrt(
-                        (endX - currentX) * (endX - currentX) +
-                            (endY - currentY) * (endY - currentY)
-                    ) <= lookAheadDistance
-                )
-                    return { x: endX, y: endY }; // If it is then return the coordinates of the last point
-            }
+            console.log(
+                `Goal point x is: ${goalPt.x}, Goal point y is: ${goalPt.y}`
+            );
         }
+
+        console.log(
+            "////////////////////////////////////////////////////////////\n"
+        );
 
         return goalPt;
     }
