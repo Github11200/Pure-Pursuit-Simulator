@@ -129,66 +129,78 @@ function Box({ xValue, yValue, speedValue, index }) {
     const [, setX] = useState(xValue);
     const [, setY] = useState(yValue);
     const [, setSpeed] = useState(speedValue);
+    const [display, setDisplay] = useState(false);
 
     return (
-        <div className="bg-[#2f343c] p-4 rounded-3xl">
-            <h2 className="my-auto mb-5">Point {index + 1}</h2>
-            <label htmlFor="x" className="text-xl">
-                X Coordinate
-            </label>
-            <input
-                id="x"
-                min={30}
-                max={834}
-                step={1}
-                type="range"
-                value={pointsHandler.Points[index].x}
-                className="range range-sm mt-3"
-                onChange={(e) => {
-                    setX(e.target.value);
-                    pointsHandler.Points[index].x = parseInt(e.target.value);
-                }}
-            />
-            <br />
-            <label htmlFor="y" className="text-xl">
-                Y Coordinate
-            </label>
-            <input
-                id="y"
-                min={30}
-                max={834}
-                type="range"
-                value={pointsHandler.Points[index].y}
-                className="range range-sm mt-3"
-                onChange={(e) => {
-                    setY(pointsHandler.Points[index].y);
-                    pointsHandler.Points[index].y = Number(e.target.value);
-                }}
-            />
-            <br />
-            <label htmlFor="speed" className="text-xl">
-                Speed
-            </label>
-            <input
-                id="speed"
-                min={0}
-                max={6}
-                step={0.5}
-                type="range"
-                value={pointsHandler.Points[index].speed}
-                className="range range-sm mt-3"
-                onChange={(e) => {
-                    setSpeed(pointsHandler.Points[index].speed);
-                    pointsHandler.Points[index].speed = Number(e.target.value);
-                }}
-            />
+        <div className="bg-[#2f343c] p-6 rounded-3xl hover:bg-[#262a30] mx-4 w-[15vw]">
+            <button
+                onClick={() => setDisplay(display ? false : true)}
+                className={display ? "w-full h-full mb-5" : "w-full h-full"}
+            >
+                <h2 className="my-auto mb-0 text-3xl">Point {index + 1}</h2>
+            </button>
+            <div className={!display ? "hidden" : ""}>
+                <label htmlFor="x" className="text-xl">
+                    X Coordinate
+                </label>
+                <input
+                    id="x"
+                    min={30}
+                    max={834}
+                    step={1}
+                    type="range"
+                    value={pointsHandler.Points[index].x}
+                    className="range range-sm mt-3"
+                    onChange={(e) => {
+                        setX(e.target.value);
+                        pointsHandler.Points[index].x = parseInt(
+                            e.target.value
+                        );
+                    }}
+                />
+                <br />
+                <label htmlFor="y" className="text-xl">
+                    Y Coordinate
+                </label>
+                <input
+                    id="y"
+                    min={30}
+                    max={834}
+                    type="range"
+                    value={pointsHandler.Points[index].y}
+                    className="range range-sm mt-3"
+                    onChange={(e) => {
+                        setY(pointsHandler.Points[index].y);
+                        pointsHandler.Points[index].y = Number(e.target.value);
+                    }}
+                />
+                <br />
+                <label htmlFor="speed" className="text-xl">
+                    Speed
+                </label>
+                <input
+                    id="speed"
+                    min={0}
+                    max={6}
+                    step={0.5}
+                    type="range"
+                    value={pointsHandler.Points[index].speed}
+                    className="range range-sm mt-3"
+                    onChange={(e) => {
+                        setSpeed(pointsHandler.Points[index].speed);
+                        pointsHandler.Points[index].speed = Number(
+                            e.target.value
+                        );
+                    }}
+                />
+            </div>
         </div>
     );
 }
 
 function PointsBoxes({ points }) {
     return (
-        <div>
+        <div className="flex flex-wrap col-span-2 justify-center">
             {points.map((object, i) => {
                 return (
                     <div key={i}>
@@ -254,8 +266,6 @@ function App() {
                 </button>
             </div>
             <div className="justify-self-start ml-[5vw] my-[15vh]">
-                <PointsBoxes points={points} />
-                <br />
                 <div className="mt-5">
                     <label htmlFor="lookAheadDistance" className="text-xl">
                         Look Ahead Distance
@@ -271,6 +281,7 @@ function App() {
                     />
                 </div>
             </div>
+            <PointsBoxes points={points} />
         </div>
     );
 }

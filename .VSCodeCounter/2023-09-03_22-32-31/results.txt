@@ -1,0 +1,54 @@
+Date : 2023-09-03 22:32:31
+Directory : c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator
+Total : 17 files,  3004 codes, 69 comments, 116 blanks, all 3189 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JSON           |          2 |      2,420 |          0 |          2 |      2,422 |
+| JavaScript JSX |          6 |        505 |         67 |        104 |        676 |
+| JavaScript     |          3 |         52 |          2 |          4 |         58 |
+| HTML           |          1 |         13 |          0 |          1 |         14 |
+| Markdown       |          2 |          7 |          0 |          5 |         12 |
+| CSS            |          2 |          6 |          0 |          0 |          6 |
+| XML            |          1 |          1 |          0 |          0 |          1 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |         17 |      3,004 |         69 |        116 |      3,189 |
+| . (Files)                                                                                                  |          1 |          2 |          0 |          1 |          3 |
+| Simulator                                                                                                  |         16 |      3,002 |         69 |        115 |      3,186 |
+| Simulator (Files)                                                                                          |          7 |      2,490 |          2 |         11 |      2,503 |
+| Simulator\public                                                                                           |          1 |          1 |          0 |          0 |          1 |
+| Simulator\src                                                                                              |          8 |        511 |         67 |        104 |        682 |
+| Simulator\src (Files)                                                                                      |          4 |        238 |         27 |         41 |        306 |
+| Simulator\src\assets                                                                                       |          4 |        273 |         40 |         63 |        376 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                                   | language       | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\README.md                                | Markdown       |          2 |          0 |          1 |          3 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\README.md                      | Markdown       |          5 |          0 |          4 |          9 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\index.html                     | HTML           |         13 |          0 |          1 |         14 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\package-lock.json              | JSON           |      2,392 |          0 |          1 |      2,393 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\package.json                   | JSON           |         28 |          0 |          1 |         29 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\postcss.config.js              | JavaScript     |          6 |          0 |          1 |          7 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\public\vite.svg                | XML            |          1 |          0 |          0 |          1 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\App.css                    | CSS            |          3 |          0 |          0 |          3 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\App.jsx                    | JavaScript JSX |        224 |         27 |         39 |        290 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\assets\ChooseGoalPoint.jsx | JavaScript JSX |         97 |         17 |         23 |        137 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\assets\MoveToPoint.jsx     | JavaScript JSX |         23 |          7 |          7 |         37 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\assets\Waypoints.jsx       | JavaScript JSX |         55 |          0 |          7 |         62 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\assets\temp.jsx            | JavaScript JSX |         98 |         16 |         26 |        140 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\index.css                  | CSS            |          3 |          0 |          0 |          3 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\src\main.jsx                   | JavaScript JSX |          8 |          0 |          2 |         10 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\tailwind.config.js             | JavaScript     |         38 |          1 |          1 |         40 |
+| c:\Users\patel\Desktop\Jinay\Code\Projects\Pure-Pursuit-Simulator\Simulator\vite.config.js                 | JavaScript     |          8 |          1 |          2 |         11 |
+| Total                                                                                                      |                |      3,004 |         69 |        116 |      3,189 |
++------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
