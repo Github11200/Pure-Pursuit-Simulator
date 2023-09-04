@@ -28,6 +28,7 @@ export let y = pointsHandler.Points[0].y;
 let diameter = lookAheadDistance * 2;
 let startSimulation = false;
 let simulationEnded = false;
+let bg = null;
 
 // THE RATIO OF THE FIELD IN THIS PROGRAM IS 1":16"
 function P5Sketch() {
@@ -35,13 +36,16 @@ function P5Sketch() {
     // It also creates the canvas
     const setup = (p5, canvasParentRef) => {
         P5 = p5;
-        P5.createCanvas(864, 864).parent(canvasParentRef);
-        P5.background("orange");
+        P5.createCanvas(1000, 1000).parent(canvasParentRef);
+        bg = p5.loadImage(
+            "https://www.vexforum.com/uploads/default/optimized/3X/6/b/6bd2a710d5e8f3eb48fc93b338faa8a7dcdc3ff2_2_1000x1000.png"
+        );
+        P5.background(bg);
         P5.angleMode(P5.DEGREES);
     };
 
     const draw = (P5) => {
-        if (!simulationEnded) P5.background("orange");
+        if (!simulationEnded) P5.background(bg);
 
         if (startSimulation && !simulationEnded) {
             diameter = lookAheadDistance * 2;
@@ -105,11 +109,11 @@ function P5Sketch() {
             P5.ellipse(0, 0, diameter, diameter);
 
             // Draw the line to the point to follow
-            P5.line(0, 0, lookAheadDistance, 0);
+            P5.line(0, 0, 0, -lookAheadDistance);
 
             // Draw the circle at the end of the line
             P5.fill("red");
-            P5.ellipse(lookAheadDistance, 0, 10, 10);
+            P5.ellipse(0, -lookAheadDistance, 10, 10);
 
             // Draw the black circle at the center of the robot circle
             P5.fill("black");
@@ -252,7 +256,7 @@ function App() {
             <div
                 onClick={(e) => clickHandler(e)}
                 draggable="true"
-                className="justify-self-end grid grid-rows-[2fr_0.4fr] grid-flow-row"
+                className="justify-self-end grid grid-rows-[2fr_0.1fr] grid-flow-row mb-16"
             >
                 <P5Sketch />
                 <button
