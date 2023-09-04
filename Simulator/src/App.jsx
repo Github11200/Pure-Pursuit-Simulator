@@ -2,7 +2,8 @@
 
 /*****************************IMPORTS*****************************/
 import "./App.css";
-import { useState } from "react";
+import React, { useEffect } from "react";
+import { useRef, useState } from "react";
 import Sketch from "react-p5";
 
 import PointsHandler from "./assets/Waypoints";
@@ -124,41 +125,112 @@ function P5Sketch() {
     return <Sketch setup={setup} draw={draw} />;
 }
 
-function getJSX(subtractOne = false, i = null) {
-    // Displays the points, creates the hover effects, and sets the closest point which is used when deleting points
-    const index = i ? i : pointsHandler.displayPoints();
+function Box({ xValue, yValue, speedValue, index }) {
+    const [, setX] = useState(xValue);
+    const [, setY] = useState(yValue);
+    const [, setSpeed] = useState(speedValue);
 
-    // Update the JSX to display the slides for each point
-    pointsHandler.mapPointsValuesToSetJSXValue(subtractOne ? index - 1 : index);
-
-    return pointsHandler.JSX;
+    return (
+        <div className="bg-[#2f343c] p-4 rounded-3xl">
+            <h2 className="my-auto mb-5">Point {index + 1}</h2>
+            <label htmlFor="x" className="text-xl">
+                X Coordinate
+            </label>
+            <input
+                id="x"
+                min={30}
+                max={834}
+                step={1}
+                type="range"
+                value={pointsHandler.Points[index].x}
+                className="range range-sm mt-3"
+                onChange={(e) => {
+                    setX(e.target.value);
+                    pointsHandler.Points[index].x = parseInt(e.target.value);
+                }}
+            />
+            <br />
+            <label htmlFor="y" className="text-xl">
+                Y Coordinate
+            </label>
+            <input
+                id="y"
+                min={30}
+                max={834}
+                type="range"
+                value={pointsHandler.Points[index].y}
+                className="range range-sm mt-3"
+                onChange={(e) => {
+                    setY(pointsHandler.Points[index].y);
+                    pointsHandler.Points[index].y = Number(e.target.value);
+                }}
+            />
+            <br />
+            <label htmlFor="speed" className="text-xl">
+                Speed
+            </label>
+            <input
+                id="speed"
+                min={0}
+                max={6}
+                step={0.5}
+                type="range"
+                value={pointsHandler.Points[index].speed}
+                className="range range-sm mt-3"
+                onChange={(e) => {
+                    setSpeed(pointsHandler.Points[index].speed);
+                    pointsHandler.Points[index].speed = Number(e.target.value);
+                }}
+            />
+        </div>
+    );
 }
 
-// This function handles clicks on the webpage
-const clickHandler = (e) => {
-    e.preventDefault();
-
-    if (e.target.id !== "button") {
-        // Loop through each point, which is a object that contains properties
-        for (let i = 0; i < pointsHandler.Points.length; ++i) {
-            // If the mouse is near the point (and this property is changed and handled in the Waypoints.jsx file) then it means that the user wants to delete the point
-            if (pointsHandler.Points[i].isNear) {
-                // Then you can remove that point in the array
-                pointsHandler.removePoint(i);
-                return getJSX(true);
-            }
-        }
-        // If the mouse is not near any of points that means the user wants to add a point so do that
-        pointsHandler.addPoint();
-    }
-
-    return getJSX();
-};
+function PointsBoxes({ points }) {
+    return (
+        <div>
+            {points.map((object, i) => {
+                return (
+                    <div key={i}>
+                        <Box
+                            xValue={object.x}
+                            yValue={object.y}
+                            speedValue={object.speed}
+                            index={i}
+                        />
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
 
 function App() {
-    pointsHandler.mapPointsValuesToSetJSXValue();
     // This stores the JSX for each of the sliders for each of the points
-    const [pointsJSX, setPointsJSX] = useState(pointsHandler.JSX);
+    const [points, setPoints] = useState(pointsHandler.Points);
+
+    // This function handles clicks on the webpage
+    const clickHandler = (e) => {
+        e.preventDefault();
+
+        if (e.target.id !== "button") {
+            // Loop through each point, which is a object that contains properties
+            for (let i = 0; i < pointsHandler.Points.length; ++i) {
+                // If the mouse is near the point (and this property is changed and handled in the Waypoints.jsx file) then it means that the user wants to delete the point
+                if (pointsHandler.Points[i].isNear) {
+                    // Then you can remove that point in the array
+                    pointsHandler.removePoint(i);
+
+                    setPoints([...pointsHandler.Points]);
+                    return;
+                }
+            }
+            // If the mouse is not near any of points that means the user wants to add a point so do that
+            pointsHandler.addPoint();
+
+            setPoints([...pointsHandler.Points]);
+        }
+    };
 
     return (
         <div className="w-screen prose max-w-[100%] grid grid-rows-[0.49fr_2fr] grid-cols-[1.5fr_1fr] scroll-x overflow-x-hidden">
@@ -166,11 +238,11 @@ function App() {
                 Pure Pursuit Path Planner
             </h1>
             <div
-                onClick={(e) => setPointsJSX(clickHandler(e))}
+                onClick={(e) => clickHandler(e)}
                 draggable="true"
                 className="justify-self-end grid grid-rows-[2fr_0.4fr] grid-flow-row"
             >
-                <P5Sketch setPointsJSX={setPointsJSX} />
+                <P5Sketch />
                 <button
                     onClick={() => {
                         startSimulation = true;
@@ -182,7 +254,7 @@ function App() {
                 </button>
             </div>
             <div className="justify-self-start ml-[5vw] my-[15vh]">
-                {pointsJSX}
+                <PointsBoxes points={points} />
                 <br />
                 <div className="mt-5">
                     <label htmlFor="lookAheadDistance" className="text-xl">
