@@ -135,6 +135,9 @@ function Box({ xValue, yValue, speedValue, index }) {
     const [, setSpeed] = useState(speedValue);
     const [display, setDisplay] = useState(false);
 
+    let spans = [];
+    for (let i = 0; i < 12; ++i) spans.push(<span key={i}>|</span>);
+
     return (
         <div className="bg-[#2f343c] p-6 rounded-3xl hover:bg-[#262a30] mx-4 w-[15vw]">
             <button
@@ -154,7 +157,7 @@ function Box({ xValue, yValue, speedValue, index }) {
                     step={1}
                     type="range"
                     value={pointsHandler.Points[index].x}
-                    className="range range-sm mt-3"
+                    className="range range-sm range-info mt-3"
                     onChange={(e) => {
                         setX(e.target.value);
                         pointsHandler.Points[index].x = parseInt(
@@ -172,7 +175,7 @@ function Box({ xValue, yValue, speedValue, index }) {
                     max={834}
                     type="range"
                     value={pointsHandler.Points[index].y}
-                    className="range range-sm mt-3"
+                    className="range range-sm range-info  mt-3"
                     onChange={(e) => {
                         setY(pointsHandler.Points[index].y);
                         pointsHandler.Points[index].y = Number(e.target.value);
@@ -189,7 +192,7 @@ function Box({ xValue, yValue, speedValue, index }) {
                     step={0.5}
                     type="range"
                     value={pointsHandler.Points[index].speed}
-                    className="range range-sm mt-3"
+                    className="range range-sm range-info mt-3"
                     onChange={(e) => {
                         setSpeed(pointsHandler.Points[index].speed);
                         pointsHandler.Points[index].speed = Number(
@@ -197,6 +200,20 @@ function Box({ xValue, yValue, speedValue, index }) {
                         );
                     }}
                 />
+                <div className="w-full flex justify-between text-xs px-2">
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                    <span>|</span>
+                </div>
             </div>
         </div>
     );

@@ -114,7 +114,11 @@ class FindGoalPoint {
                         (endX - currentX) * (endX - currentX) +
                             (endY - currentY) * (endY - currentY)
                     ) <=
-                    lookAheadDistance - (lookAheadDistance - 1)
+                    lookAheadDistance -
+                        (pointsHandler.Points[pointsHandler.Points.length - 1]
+                            .speed > 4.5
+                            ? lookAheadDistance - 2
+                            : lookAheadDistance - 1)
                 )
                     return false;
 
