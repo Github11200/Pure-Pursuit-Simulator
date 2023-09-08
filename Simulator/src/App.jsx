@@ -36,10 +36,8 @@ function P5Sketch() {
     // It also creates the canvas
     const setup = (p5, canvasParentRef) => {
         P5 = p5;
-        P5.createCanvas(1000, 1000).parent(canvasParentRef);
-        bg = p5.loadImage(
-            "https://www.vexforum.com/uploads/default/optimized/3X/6/b/6bd2a710d5e8f3eb48fc93b338faa8a7dcdc3ff2_2_1000x1000.png"
-        );
+        P5.createCanvas(960, 960).parent(canvasParentRef);
+        bg = p5.loadImage("/img.png");
         P5.background(bg);
         P5.angleMode(P5.DEGREES);
     };
@@ -48,6 +46,16 @@ function P5Sketch() {
         if (!simulationEnded) P5.background(bg);
 
         if (startSimulation && !simulationEnded) {
+            P5.push();
+
+            P5.translate(0, 960);
+            P5.fill("yellow");
+            P5.ellipse(0, 0, 20, 20);
+            P5.textSize(25);
+            P5.text("(0, 0)", 15, -15);
+
+            P5.pop();
+
             diameter = lookAheadDistance * 2;
 
             // Find the point to follow
@@ -73,7 +81,7 @@ function P5Sketch() {
             // Move the origin of the shapes to the new x and y coordinates
             P5.translate(x, y);
 
-            // Draw the robot
+            // Draw the circle representing the look ahead distance
             P5.ellipse(0, 0, diameter, diameter);
 
             // Draw the line to the point to follow
@@ -99,12 +107,22 @@ function P5Sketch() {
 
             diameter = lookAheadDistance * 2;
 
+            P5.push();
+
+            P5.translate(0, 960);
+            P5.fill("yellow");
+            P5.ellipse(0, 0, 20, 20);
+            P5.textSize(25);
+            P5.text("(0, 0)", 15, -15);
+
+            P5.pop();
+
             // Draws the robot, and the line showing the heading of the robot
             P5.fill("white");
 
             P5.push();
 
-            // Draw the robot
+            // Draw the circle representing the look ahead distance
             P5.translate(x, y);
             P5.ellipse(0, 0, diameter, diameter);
 
@@ -123,7 +141,11 @@ function P5Sketch() {
         }
 
         // Displays the points, creates the hover effects, and sets the closest point which is used when deleting points
-        pointsHandler.displayPoints();
+        !simulationEnded && pointsHandler.displayPoints();
+        if (simulationEnded) {
+            pointsHandler.displayPoints();
+            return;
+        }
     };
 
     return <Sketch setup={setup} draw={draw} />;
@@ -271,9 +293,9 @@ function App() {
                 Pure Pursuit Path Planner
             </h1>
             <div
-                onClick={(e) => clickHandler(e)}
+                onClick={(e) => !simulationEnded && clickHandler(e)}
                 draggable="true"
-                className="justify-self-end grid grid-rows-[2fr_0.1fr] grid-flow-row mb-16"
+                className="justify-self-end grid grid-rows-[2fr_0.2fr] grid-flow-row mb-16"
             >
                 <P5Sketch />
                 <button

@@ -13,7 +13,6 @@ class FindGoalPoint {
 
     // This function just finds all the of the points on the path that the robot is intersecting with
     findIntersectionPoints(pointsHandler) {
-        console.log(pointsHandler);
         let goalPt = null;
         let sol1 = goalPt;
         let sol2 = goalPt;

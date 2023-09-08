@@ -3,8 +3,16 @@ import { P5 as p5 } from "../App";
 class PointsHandler {
     Points = [
         {
-            x: 260,
-            y: 920,
+            x: 240,
+            y: 890,
+            isNear: false,
+            distance: 0,
+            speed: 1.5,
+            lookAheadDistance: 30,
+        },
+        {
+            x: 240,
+            y: 870,
             isNear: false,
             distance: 0,
             speed: 1.5,
