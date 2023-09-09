@@ -10,6 +10,7 @@ import PointsHandler from "./assets/Waypoints";
 import FindGoalPoint from "./assets/ChooseGoalPoint";
 import MoveToPoint from "./assets/MoveToPoint";
 import { theWayPointBeingFollowed } from "./assets/ChooseGoalPoint";
+import { CodeOutputBox } from "./assets/CodeOutputBox";
 
 /*****************************INITIALIZE CLASSES*****************************/
 let moveToPoint = new MoveToPoint();
@@ -161,7 +162,7 @@ function Box({ xValue, yValue, speedValue, index }) {
     for (let i = 0; i < 12; ++i) spans.push(<span key={i}>|</span>);
 
     return (
-        <div className="bg-[#2f343c] p-6 rounded-3xl hover:bg-[#262a30] mx-4 w-[15vw]">
+        <div className="bg-[#2f343c] p-6 rounded-3xl hover:bg-[#262a30] mx-4 w-[15vw] my-4">
             <button
                 onClick={() => setDisplay(display ? false : true)}
                 className={display ? "w-full h-full mb-5" : "w-full h-full"}
@@ -292,6 +293,44 @@ function App() {
             <h1 className="text-6xl text-center col-span-2 place-self-center my-[5vh]">
                 Pure Pursuit Path Planner
             </h1>
+            <div className="col-span-2 w-[30vw] justify-self-center mb-10">
+                <h1 className="text-center">Instructions</h1>
+                <p className="text-left text-xl">
+                    <ul>
+                        <li>
+                            Add points by clicking on the image of the field.
+                        </li>
+                        <li>
+                            To remove points, hover over the point you want to
+                            remove, and when it turns red click it.
+                        </li>
+                        <li>
+                            To edit the x and y coordinates or speed of the
+                            point, click on the point number you want to edit
+                            (which are in the boxes that say "Point [point
+                            number]"). You can then drag the sliders to what
+                            ever you want the values to be.
+                        </li>
+                        <li>
+                            To adjust the look ahead distance, just drag the
+                            slider with that label.
+                        </li>
+                        <li>
+                            When you are ready, click the "Run Simulation"
+                            button to see how the robot will go through the
+                            field.
+                        </li>
+                        <li>
+                            When you have your path planned out, scroll all the
+                            way to the bottom where you will see an output
+                            section. In this section you can simply copy and
+                            paste the array of objects into a C++ program and
+                            then have your pure pursuit algorithm loop over
+                            those values.
+                        </li>
+                    </ul>
+                </p>
+            </div>
             <div
                 onClick={(e) => !simulationEnded && clickHandler(e)}
                 draggable="true"
@@ -325,6 +364,8 @@ function App() {
                 </div>
             </div>
             <PointsBoxes points={points} />
+            <br />
+            <CodeOutputBox points={points} />
         </div>
     );
 }
