@@ -5,6 +5,7 @@ import { y as currentY } from "../App";
 class MoveToPoint {
     // This is the speed at which the robot will move
     speed = 1.5;
+    theta = 0;
 
     // This function calculates the increments on the x and y axis
     calculateHowMuchToIncrementXAndYPositionBy(thePointBeingFollowed) {

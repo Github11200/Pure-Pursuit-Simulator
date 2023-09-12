@@ -82,6 +82,13 @@ function P5Sketch() {
             // Move the origin of the shapes to the new x and y coordinates
             P5.translate(x, y);
 
+            // Draw the square representing the robot
+            P5.rotate(moveToPoint.theta);
+            P5.fill("blue");
+            P5.rect(-43.5, -50, 87, 100);
+
+            P5.fill("white");
+
             // Draw the circle representing the look ahead distance
             P5.ellipse(0, 0, diameter, diameter);
 
@@ -123,8 +130,15 @@ function P5Sketch() {
 
             P5.push();
 
-            // Draw the circle representing the look ahead distance
             P5.translate(x, y);
+
+            // Draw the square representing the robot
+            P5.fill("blue");
+            P5.rect(-43.5, -50, 87, 100);
+
+            P5.fill("white");
+
+            // Draw the circle representing the look ahead distance
             P5.ellipse(0, 0, diameter, diameter);
 
             // Draw the line to the point to follow
