@@ -19,7 +19,6 @@ let pointsHandler = new PointsHandler();
 
 /*****************************EXPORTS*****************************/
 export let pointToFollow;
-export let lastFoundIndex = 0;
 export let P5;
 export let lookAheadDistance = 30;
 export let x = pointsHandler.Points[0].x;
@@ -30,6 +29,8 @@ let diameter = lookAheadDistance * 2;
 let startSimulation = false;
 let simulationEnded = false;
 let bg = null;
+let currentPoint = 0;
+let theta = 0;
 
 // THE RATIO OF THE FIELD IN THIS PROGRAM IS 1":16"
 function P5Sketch() {
@@ -57,11 +58,15 @@ function P5Sketch() {
 
             P5.pop();
 
-            diameter = lookAheadDistance * 2;
+            diameter = pointsHandler.Points[currentPoint].lookAheadDistance * 2;
 
             // Find the point to follow
             pointToFollow = findGoalPoint.findIntersectionPoints(pointsHandler);
             if (!pointToFollow) simulationEnded = true;
+
+            pointToFollow
+                ? (currentPoint = pointToFollow.index)
+                : (currentPoint = pointsHandler.Points.length - 1);
 
             P5.fill("white");
 
@@ -82,10 +87,15 @@ function P5Sketch() {
             // Move the origin of the shapes to the new x and y coordinates
             P5.translate(x, y);
 
+            theta =
+                Math.atan((x - pointToFollow.x) / (pointToFollow.y - y)) *
+                57.2957795;
+
             // Draw the square representing the robot
-            P5.rotate(moveToPoint.theta);
+            P5.rotate(theta);
             P5.fill("blue");
             P5.rect(-43.5, -50, 87, 100);
+            P5.rotate(-theta);
 
             P5.fill("white");
 
@@ -166,14 +176,26 @@ function P5Sketch() {
     return <Sketch setup={setup} draw={draw} />;
 }
 
-function Box({ xValue, yValue, speedValue, index }) {
+function Box({
+    xValue,
+    yValue,
+    speedValue,
+    lookAheadDistanceValue,
+    index,
+    setPoints,
+}) {
     const [, setX] = useState(xValue);
     const [, setY] = useState(yValue);
+    const [, setLookAheadDistance] = useState(lookAheadDistanceValue);
     const [, setSpeed] = useState(speedValue);
     const [display, setDisplay] = useState(false);
 
     let spans = [];
     for (let i = 0; i < 12; ++i) spans.push(<span key={i}>|</span>);
+
+    const updatePointsValues = () => {
+        setPoints([...pointsHandler.Points]);
+    };
 
     return (
         <div className="bg-[#2f343c] p-6 rounded-3xl hover:bg-[#262a30] mx-4 w-[15vw] my-4">
@@ -200,6 +222,7 @@ function Box({ xValue, yValue, speedValue, index }) {
                         pointsHandler.Points[index].x = parseInt(
                             e.target.value
                         );
+                        updatePointsValues();
                     }}
                 />
                 <br />
@@ -216,6 +239,28 @@ function Box({ xValue, yValue, speedValue, index }) {
                     onChange={(e) => {
                         setY(pointsHandler.Points[index].y);
                         pointsHandler.Points[index].y = Number(e.target.value);
+                        updatePointsValues();
+                    }}
+                />
+                <br />
+                <label htmlFor="lookAheadDistance" className="text-xl">
+                    Look Ahead Distance
+                </label>
+                <input
+                    id="lookAheadDistance"
+                    min={1}
+                    max={60}
+                    type="range"
+                    value={pointsHandler.Points[index].lookAheadDistance}
+                    className="range range-sm range-info  mt-3"
+                    onChange={(e) => {
+                        setLookAheadDistance(
+                            pointsHandler.Points[index].lookAheadDistance
+                        );
+                        pointsHandler.Points[index].lookAheadDistance = Number(
+                            e.target.value
+                        );
+                        updatePointsValues();
                     }}
                 />
                 <br />
@@ -235,6 +280,7 @@ function Box({ xValue, yValue, speedValue, index }) {
                         pointsHandler.Points[index].speed = Number(
                             e.target.value
                         );
+                        updatePointsValues();
                     }}
                 />
                 <div className="w-full flex justify-between text-xs px-2">
@@ -256,7 +302,7 @@ function Box({ xValue, yValue, speedValue, index }) {
     );
 }
 
-function PointsBoxes({ points }) {
+function PointsBoxes({ points, setPoints }) {
     return (
         <div className="flex flex-wrap col-span-2 justify-center">
             {points.map((object, i) => {
@@ -266,7 +312,9 @@ function PointsBoxes({ points }) {
                             xValue={object.x}
                             yValue={object.y}
                             speedValue={object.speed}
+                            lookAheadDistanceValue={object.lookAheadDistance}
                             index={i}
+                            setPoints={setPoints}
                         />
                     </div>
                 );
@@ -303,13 +351,29 @@ function App() {
     };
 
     return (
-        <div className="w-screen prose max-w-[100%] grid grid-rows-[0.49fr_2fr] grid-cols-[1.5fr_1fr] scroll-x overflow-x-hidden">
-            <h1 className="text-6xl text-center col-span-2 place-self-center my-[5vh]">
+        <div className="w-screen prose max-w-[100%] grid grid-rows-[0.49fr_2fr] grid-cols-[1.1fr_1fr] scroll-x overflow-x-hidden">
+            <h1 className="text-6xl text-center col-span-2 place-self-center my-[8vh]">
                 Pure Pursuit Path Planner
             </h1>
-            <div className="col-span-2 w-[30vw] justify-self-center mb-10">
+            <div
+                onClick={(e) => !simulationEnded && clickHandler(e)}
+                draggable="true"
+                className="justify-self-end grid grid-rows-[2fr_0.2fr] grid-flow-row mb-16"
+            >
+                <P5Sketch />
+                <button
+                    onClick={() => {
+                        startSimulation = true;
+                    }}
+                    id="button"
+                    className="btn mx-auto place-self-center"
+                >
+                    Run Simulation :):):)
+                </button>
+            </div>
+            <div className="w-[30vw] justify-self-start mb-10 col-span-1 ml-[40px]">
                 <h1 className="text-center">Instructions</h1>
-                <p className="text-left text-xl">
+                <div className="text-left text-xl">
                     <ul>
                         <li>
                             Add points by clicking on the image of the field.
@@ -343,41 +407,12 @@ function App() {
                             those values.
                         </li>
                     </ul>
-                </p>
-            </div>
-            <div
-                onClick={(e) => !simulationEnded && clickHandler(e)}
-                draggable="true"
-                className="justify-self-end grid grid-rows-[2fr_0.2fr] grid-flow-row mb-16"
-            >
-                <P5Sketch />
-                <button
-                    onClick={() => {
-                        startSimulation = true;
-                    }}
-                    id="button"
-                    className="btn mx-auto place-self-center"
-                >
-                    Run Simulation :):):)
-                </button>
-            </div>
-            <div className="justify-self-start ml-[5vw] my-[15vh]">
-                <div className="mt-5">
-                    <label htmlFor="lookAheadDistance" className="text-xl">
-                        Look Ahead Distance
-                    </label>
-                    <input
-                        id="lookAheadDistance"
-                        min={10}
-                        max={55}
-                        type="range"
-                        defaultValue={30}
-                        className="range range-sm mt-3"
-                        onChange={(e) => (lookAheadDistance = e.target.value)}
-                    />
                 </div>
             </div>
-            <PointsBoxes points={points} />
+            <PointsBoxes
+                points={points}
+                setPoints={(value) => setPoints(value)}
+            />
             <br />
             <CodeOutputBox points={points} />
         </div>

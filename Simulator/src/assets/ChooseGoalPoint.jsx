@@ -1,10 +1,13 @@
 import { lookAheadDistance } from "../App";
 import { x as currentX } from "../App";
 import { y as currentY } from "../App";
+import { P5 } from "../App";
 
 export let theWayPointBeingFollowed = null;
 
 class FindGoalPoint {
+    lastFoundIndex = 0;
+
     // This function just returns either 1 or -1 based on whether or not the number is positive or negative
     sgn(x) {
         if (x >= 0) return 1;
@@ -16,8 +19,13 @@ class FindGoalPoint {
         let goalPt = null;
         let sol1 = goalPt;
         let sol2 = goalPt;
+        let lastValueOfI = 0;
 
-        for (let i = 0; i < pointsHandler.Points.length - 1; ++i) {
+        for (
+            let i = this.lastFoundIndex;
+            i < pointsHandler.Points.length - 1;
+            ++i
+        ) {
             let pointOne = pointsHandler.Points[i];
             let pointTwo = pointsHandler.Points[i + 1];
 
@@ -80,24 +88,6 @@ class FindGoalPoint {
                 minY <= sol2.y &&
                 sol2.y <= maxY;
 
-            // Check if either of the intersection points are valid
-            if (validPointOne || validPointTwo) {
-                // Check if the first intersection point is valid, if it is then set goal point to the first solution
-                if (validPointOne) goalPt = sol1;
-
-                // Check if the second intersection point is valid
-                if (validPointTwo) {
-                    // Now check which one of the solutions is closer to the second point
-                    if (
-                        goalPt === null ||
-                        Math.abs(x1Sol - x2) > Math.abs(x2Sol - x2) ||
-                        Math.abs(y1Sol - y2) > Math.abs(y2Sol - y2)
-                    ) {
-                        goalPt = sol2;
-                    }
-                }
-            }
-
             // This checks if the number of points is greater than 0 which means there is an end point
             if (pointsHandler.Points.length > 0) {
                 // Since there is an end point get the coordinates of the last point in the array
@@ -128,11 +118,41 @@ class FindGoalPoint {
                             (endY - currentY) * (endY - currentY)
                     ) <= lookAheadDistance
                 )
-                    return { x: endX, y: endY }; // If it is then return the coordinates of the last point
+                    return { x: endX, y: endY, index: i }; // If it is then return the coordinates of the last point
             }
+
+            // Check if either of the intersection points are valid
+            if (validPointOne || validPointTwo) {
+                // Check if the first intersection point is valid, if it is then set goal point to the first solution
+                if (validPointOne) goalPt = sol1;
+
+                // Check if the second intersection point is valid
+                if (validPointTwo) {
+                    // Now check which one of the solutions is closer to the second point
+                    if (
+                        goalPt === null ||
+                        Math.abs(x1Sol - x2) > Math.abs(x2Sol - x2) ||
+                        Math.abs(y1Sol - y2) > Math.abs(y2Sol - y2)
+                    ) {
+                        goalPt = sol2;
+                    }
+                }
+
+                if (
+                    pointTwo &&
+                    P5.dist(goalPt.x, goalPt.y, pointTwo.x, pointTwo.y) <
+                        P5.dist(currentX, currentY, pointTwo.x, pointTwo.y)
+                ) {
+                    this.lastFoundIndex = i;
+                    lastValueOfI = i;
+                    break;
+                } else this.lastFoundIndex += 1;
+            }
+
+            lastValueOfI = i;
         }
 
-        return goalPt;
+        return { ...goalPt, index: lastValueOfI };
     }
 }
 
