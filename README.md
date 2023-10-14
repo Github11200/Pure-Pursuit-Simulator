@@ -1,4 +1,5 @@
 # Pure-Pursuit-Simulator
+A simple way to plan and simulator your path for pure pursuit.
 
 ## 🎉 Overivew
 This is a simple path planner and simulator for pure pursuit algorithms in the vex robotics competition. It lets you add points to create a path, and then you can see how a robot (that is up to scale with our robot) will move on the field, and any adjustments you need to make in the path.
