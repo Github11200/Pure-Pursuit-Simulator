@@ -26,3 +26,10 @@ Some features to look out for are:
   - Options for changing the size of the robot
   - A timer to make sure your autonomous routine is within the time
   - The ability to create seperate paths so that you can add things like turns or other movements between them
+
+## 🏗️ Tools used
+The tools and libraries used to create this project are:
+  - React JS
+  - P5 JS
+  - Tailwind CSS
+  - Daisy UI
