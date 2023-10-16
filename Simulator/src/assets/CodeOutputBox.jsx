@@ -14,10 +14,10 @@ export const CodeOutputBox = ({ points }) => {
                             <p className="rounded-[15px] p-8 inline">
                                 {"{"} <br />
                                 <span className="w-16 inline-block"></span>
-                                int x = {object.x};
+                                int x = {(object.x / 96) * 14.4};
                                 <br />
                                 <span className="w-16 inline-block"></span>
-                                int y = {object.y};
+                                int y = {144 - (object.y / 96) * 14.4};
                                 <br />
                                 <span className="w-16 inline-block"></span>
                                 double speed = {object.speed};

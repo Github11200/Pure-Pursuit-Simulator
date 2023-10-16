@@ -32,7 +32,7 @@ let bg = null;
 let currentPoint = 0;
 let theta = 0;
 
-// THE RATIO OF THE FIELD IN THIS PROGRAM IS 1":16"
+// THE RATIO OF THE FIELD IN THIS PROGRAM IS 1" : 14.4"
 function P5Sketch() {
     // This sets up the p5.js for usage and any other classes that will be used
     // It also creates the canvas
