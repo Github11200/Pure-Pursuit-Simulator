@@ -343,8 +343,11 @@ function App() {
                     return;
                 }
             }
-            // If the mouse is not near any of points that means the user wants to add a point so do that
-            pointsHandler.addPoint();
+
+            if (P5.mouseY < 1030) {
+                // If the mouse is not near any of points that means the user wants to add a point so do that
+                pointsHandler.addPoint();
+            }
 
             setPoints([...pointsHandler.Points]);
         }
@@ -369,6 +372,17 @@ function App() {
                     className="btn mx-auto place-self-center"
                 >
                     Run Simulation :):):)
+                </button>
+                <button
+                    onClick={() => {
+                        x = pointsHandler.Points[0].x;
+                        y = pointsHandler.Points[0].y;
+                        startSimulation = false;
+                        simulationEnded = false;
+                        console.log(pointsHandler.Points);
+                    }}
+                >
+                    Reset
                 </button>
             </div>
             <div className="w-[30vw] justify-self-start mb-10 col-span-1 ml-[40px]">
